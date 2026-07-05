@@ -90,15 +90,6 @@
     overflow: visible;
 }
 
-.projects-stack-wrapper .project-card {
-    position: absolute;
-    top: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 380px;
-}
-
 .next-card-btn {
     margin-top: 60px;
     padding: 14px 32px;
@@ -173,11 +164,13 @@
 
 /* Stack cards positioning */
 .projects-stack-wrapper .project-card {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
+    position: absolute !important;
+    top: 0 !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 380px !important;
+    max-width: 90vw !important;
+}
     max-width: 380px;
 }
 
@@ -438,8 +431,8 @@
     }
     
     .projects-stack-wrapper .project-card {
-        max-width: 320px;
-        top: 20px;
+        width: 320px !important;
+        max-width: 90vw !important;
     }
     
     .next-card-btn {
@@ -494,8 +487,8 @@
     }
     
     .projects-stack-wrapper .project-card {
-        max-width: 290px;
-        top: 10px;
+        width: 290px !important;
+        max-width: 90vw !important;
     }
     
     .next-card-btn {
@@ -554,6 +547,11 @@
     .projects-stack-wrapper {
         max-width: 280px;
         min-height: 420px;
+    }
+    
+    .projects-stack-wrapper .project-card {
+        width: 280px !important;
+        max-width: 90vw !important;
     }
     
     .next-card-btn {
