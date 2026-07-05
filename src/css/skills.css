@@ -138,16 +138,26 @@
         padding: 0 20px;
     }
     
+    .tech-row {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
     .tech-tagline-container {
-        padding: 0 20px;
+        padding: 20px 20px;
+        order: 10;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     
     .tech-tagline {
         text-align: center;
         max-width: 100%;
+        width: 100%;
     }
     
-    .tech-row,
     .tech-row-bottom {
         justify-content: center;
     }
@@ -159,7 +169,7 @@
     }
     
     .tech-tagline-container {
-        padding: 0 16px;
+        padding: 15px 16px;
     }
     
     .tech-tagline {

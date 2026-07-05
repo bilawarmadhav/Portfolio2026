@@ -75,6 +75,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-height: 600px;
 }
 
 .projects-stack-wrapper {
@@ -86,6 +87,16 @@
     justify-content: center;
     align-items: flex-start;
     padding-top: 40px;
+    overflow: visible;
+}
+
+.projects-stack-wrapper .project-card {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 380px;
 }
 
 .next-card-btn {
@@ -145,12 +156,6 @@
 }
 
 .project-card {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 380px;
     background: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: 20px;
@@ -164,6 +169,16 @@
     transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1),
                 border-color 0.3s ease,
                 box-shadow 0.3s ease;
+}
+
+/* Stack cards positioning */
+.projects-stack-wrapper .project-card {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 380px;
 }
 
 /* Reset positioning for carousel cards */
@@ -414,6 +429,7 @@
     
     .projects-stack-container {
         padding: 40px 16px 80px;
+        min-height: 550px;
     }
     
     .projects-stack-wrapper {
@@ -421,8 +437,9 @@
         min-height: 460px;
     }
     
-    .projects-stack-container .project-card {
+    .projects-stack-wrapper .project-card {
         max-width: 320px;
+        top: 20px;
     }
     
     .next-card-btn {
@@ -468,6 +485,7 @@
     
     .projects-stack-container {
         padding: 30px 12px 70px;
+        min-height: 520px;
     }
     
     .projects-stack-wrapper {
@@ -475,8 +493,9 @@
         min-height: 440px;
     }
     
-    .projects-stack-container .project-card {
+    .projects-stack-wrapper .project-card {
         max-width: 290px;
+        top: 10px;
     }
     
     .next-card-btn {
