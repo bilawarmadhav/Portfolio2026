@@ -1,7 +1,8 @@
+import experienceData from '../data/experience.json';
+
 export async function renderTimeline() {
     try {
-        const response = await fetch('/src/data/experience.json');
-        const experiences = await response.json();
+        const experiences = experienceData;
         
         const container = document.getElementById('timeline-container');
         if (!container) return;

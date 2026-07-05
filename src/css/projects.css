@@ -164,15 +164,12 @@
 
 /* Stack cards positioning */
 .projects-stack-wrapper .project-card {
-    position: absolute !important;
-    top: 0 !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    width: 380px !important;
-    max-width: 90vw !important;
-    display: flex !important;
-    opacity: 1 !important;
-    visibility: visible !important;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 380px;
+    max-width: 90vw;
 }
 
 /* Reset positioning for carousel cards */
@@ -432,8 +429,8 @@
     }
     
     .projects-stack-wrapper .project-card {
-        width: 320px !important;
-        max-width: 90vw !important;
+        width: 320px;
+        max-width: 90vw;
     }
     
     .next-card-btn {
@@ -488,8 +485,8 @@
     }
     
     .projects-stack-wrapper .project-card {
-        width: 290px !important;
-        max-width: 90vw !important;
+        width: 290px;
+        max-width: 90vw;
     }
     
     .next-card-btn {
@@ -551,8 +548,8 @@
     }
     
     .projects-stack-wrapper .project-card {
-        width: 280px !important;
-        max-width: 90vw !important;
+        width: 280px;
+        max-width: 90vw;
     }
     
     .next-card-btn {

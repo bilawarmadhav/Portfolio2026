@@ -2,6 +2,8 @@
  * Projects Card Stack with GSAP Animations
  */
 
+import projectsData from '../data/projects.json';
+
 let allProjects = [];
 let currentFilter = 'All';
 let visibleProjects = [];
@@ -10,8 +12,7 @@ let isAnimating = false;
 
 export async function renderProjects() {
     try {
-        const response = await fetch('/src/data/projects.json');
-        allProjects = await response.json();
+        allProjects = projectsData;
         
         // Initialize with all projects
         filterProjects('All');
