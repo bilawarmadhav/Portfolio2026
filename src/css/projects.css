@@ -170,8 +170,9 @@
     transform: translateX(-50%) !important;
     width: 380px !important;
     max-width: 90vw !important;
-}
-    max-width: 380px;
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 /* Reset positioning for carousel cards */

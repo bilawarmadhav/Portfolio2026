@@ -49,6 +49,7 @@
     max-width: 320px;
     margin: 0 auto;
     perspective: 800px;
+    z-index: 5;
 }
 
 .laptop-svg {
@@ -73,6 +74,8 @@
 .timeline-container {
     display: flex;
     gap: 40px;
+    position: relative;
+    z-index: 10;
 }
 
 .timeline-sticky-icon {
@@ -89,6 +92,7 @@
     align-self: flex-start;
     flex-shrink: 0;
     backdrop-filter: blur(10px);
+    z-index: 10;
 }
 
 .mini-cube {
@@ -107,10 +111,13 @@
     flex-direction: column;
     gap: 50px;
     flex-grow: 1;
+    position: relative;
+    z-index: 10;
 }
 
 .timeline-entry {
     position: relative;
+    z-index: 10;
 }
 
 .timeline-dot {
@@ -130,6 +137,8 @@
     font-weight: 700;
     margin-bottom: 4px;
     letter-spacing: -0.02em;
+    position: relative;
+    z-index: 10;
 }
 
 .company-name {
@@ -219,6 +228,8 @@
     
     .timeline-container {
         gap: 20px;
+        position: relative;
+        z-index: 10;
     }
 
     .timeline-sticky-icon {
@@ -227,10 +238,24 @@
 
     .timeline-entries {
         padding-left: 24px;
+        position: relative;
+        z-index: 10;
     }
 
     .timeline-dot {
         left: -31px;
+    }
+    
+    .timeline-entry {
+        position: relative;
+        z-index: 10;
+    }
+    
+    .role-title,
+    .timeline-date,
+    .timeline-bullets {
+        position: relative;
+        z-index: 10;
     }
 }
 
