@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madhav Bilawar — Full Stack Developer</title>
+    <meta name="description" content="Madhav Bilawar is a Full Stack Developer and BCA student building modern, high-performance web applications with React, Next.js, Django, and Node.js.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
+    
+    <!-- GSAP CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Core CSS -->
+    <script type="module" src="/src/js/main.js"></script>
+</head>
+<body>
+    <!-- Theme Toggle (Top Right) -->
+    <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme">
+        <i class="ri-moon-line"></i>
+    </button>
+
+    <!-- Mobile Menu Button (Top Left - Mobile Only) -->
+    <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Open Menu">
+        <div class="hamburger-icon">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </div>
+    </button>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu-overlay" class="mobile-menu-overlay"></div>
+
+    <!-- Mobile Menu Panel -->
+    <div id="mobile-menu-panel" class="mobile-menu-panel">
+        <div class="mobile-menu-header">
+            <div class="mobile-menu-name">Madhav Bilawar.</div>
+        </div>
+        <nav class="mobile-menu-links">
+            <a href="#skills" class="mobile-menu-link">Skills.</a>
+            <a href="#projects" class="mobile-menu-link">Work.</a>
+            <a href="#experience" class="mobile-menu-link">Experience.</a>
+            <a href="#contact" class="mobile-menu-link">Contact.</a>
+        </nav>
+    </div>
+
+    <!-- Background Effects -->
+    <div class="bg-blobs" id="bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+        <div class="noise-overlay"></div>
+    </div>
+
+    <!-- Floating Petals (Light Theme Only) -->
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+
+    <!-- Navbar (Desktop Only) -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container collapsed" id="nav-container">
+            <div class="nav-header">
+                <div class="nav-toggle" id="nav-toggle">
+                    <span class="toggle-line line-top"></span>
+                    <span class="toggle-line line-bottom"></span>
+                </div>
+                <span class="nav-name">Madhav Bilawar.</span>
+            </div>
+            
+            <div class="nav-items" id="nav-items">
+                <a href="#skills" class="nav-link">Skills.</a>
+                <a href="#projects" class="nav-link">Work.</a>
+                <a href="#experience" class="nav-link">Experience.</a>
+                <a href="#contact" class="nav-link">Contact.</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero slide-up">
+            <div class="hero-graphic">
+                <div id="robot-3d-container" class="robot-3d-container"></div>
+            </div>
+            
+            <h1 class="hero-headline">
+                <span class="serif-italic accent" id="hero-role">Full Stack</span><br>
+                <span class="sans-bold text-white">Developer.</span>
+            </h1>
+            
+            <p class="hero-subtitle">I'm a passionate BCA student in my third year, building modern, interactive, high&#8209;performance web applications with clean UI, thoughtful UX, and scalable architecture.</p>
+            
+            <div class="hero-actions">
+                <a href="#contact" class="btn btn-dark">Connect <i class="ri-links-line"></i></a>
+                <a href="#projects" class="btn btn-outline">See Work <i class="ri-arrow-right-line"></i></a>
+            </div>
+
+            <div class="hero-scroll-hint">
+                <span class="scroll-line"></span>
+                <span class="scroll-label">Scroll</span>
+            </div>
+        </section>
+
+        <!-- Tech Stack Showcase -->
+        <section id="skills" class="tech-stack slide-up">
+            <div class="tech-grid" id="skills-grid">
+                <!-- Dynamically populated from skills.json -->
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="projects-section slide-up">
+            <div class="section-label">Selected Work</div>
+            <h2 class="section-heading text-white">Find My Work</h2>
+            
+            <div class="tabs-container">
+                <div class="tabs-pill" id="project-tabs">
+                    <button class="tab active" data-filter="All">All</button>
+                    <button class="tab" data-filter="Personal">Personal</button>
+                    <button class="tab" data-filter="Projects">Projects</button>
+                    <button class="tab" data-filter="Published">Published</button>
+                </div>
+            </div>
+
+            <div class="projects-stack-container">
+                <div class="projects-stack-wrapper" id="projects-stack">
+                    <!-- Dynamically populated card stack -->
+                </div>
+                <button class="next-card-btn" id="next-card-btn">
+                    Next Project
+                    <i class="ri-arrow-right-line"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Tech Marquee Section -->
+        <section id="stats" class="stats-section slide-up" style="padding-top: 40px; padding-bottom: 80px; overflow: visible;">
+            
+            <div class="marquee-container">
+                <div class="marquee-track" id="stats-marquee">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="experience-section slide-up">
+            <div class="section-label">Journey</div>
+            <h2 class="experience-heading">
+                <span class="accent">Destructuring</span> 
+                <span class="text-white">My Work Experience.</span>
+            </h2>
+            
+            <div class="experience-layout">
+                <!-- Laptop Animation Container -->
+                <div class="laptop-container" id="laptop-container">
+                    <!-- 5-part exploding model: each <g> is independently animated by GSAP -->
+                    <svg viewBox="0 0 400 380" width="100%" height="100%" class="laptop-svg" overflow="visible">
+                        <defs>
+                            <filter id="part-glow" x="-20%" y="-20%" width="140%" height="140%">
+                                <feGaussianBlur stdDeviation="4" result="blur"/>
+                                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                            </filter>
+                        </defs>
+
+                        <!-- PART 1: Screen / Display -->
+                        <g id="part-screen" style="will-change:transform">
+                            <rect x="60" y="20" width="280" height="190" rx="14" fill="#2e2e3a" stroke="#555570" stroke-width="1.5"/>
+                            <rect x="72" y="32" width="256" height="166" rx="6" fill="#0d0d18"/>
+                            <!-- screen content -->
+                            <rect x="72" y="32" width="256" height="166" rx="6" fill="#12122a" opacity="0.9"/>
+                            <text x="200" y="122" fill="#ff7a3d" font-family="monospace" font-size="13" text-anchor="middle" opacity="0.85">&lt; /&gt;</text>
+                            <circle cx="200" cy="210" r="5" fill="#3a3a50"/>
+                        </g>
+
+                        <!-- PART 2: Hinge bar -->
+                        <g id="part-hinge" style="will-change:transform">
+                            <rect x="75" y="213" width="250" height="10" rx="5" fill="#444455" stroke="#55556a" stroke-width="1"/>
+                            <rect x="160" y="211" width="80" height="6" rx="3" fill="#555570"/>
+                        </g>
+
+                        <!-- PART 3: Keyboard deck -->
+                        <g id="part-keyboard" style="will-change:transform">
+                            <rect x="40" y="228" width="320" height="110" rx="12" fill="#252530" stroke="#3a3a4a" stroke-width="1.5"/>
+                            <!-- key rows -->
+                            <rect x="58" y="244" width="284" height="8" rx="3" fill="#1e1e28"/>
+                            <rect x="58" y="258" width="284" height="8" rx="3" fill="#1e1e28"/>
+                            <rect x="58" y="272" width="284" height="8" rx="3" fill="#1e1e28"/>
+                            <rect x="58" y="286" width="220" height="8" rx="3" fill="#1e1e28"/>
+                            <!-- spacebar -->
+                            <rect x="110" y="302" width="180" height="10" rx="4" fill="#1e1e28"/>
+                        </g>
+
+                        <!-- PART 4: Trackpad -->
+                        <g id="part-trackpad" style="will-change:transform">
+                            <rect x="145" y="318" width="110" height="14" rx="5" fill="#1e1e28" stroke="#3a3a4a" stroke-width="1"/>
+                        </g>
+
+                        <!-- PART 5: Base / Bottom chassis -->
+                        <g id="part-base" style="will-change:transform">
+                            <rect x="30" y="340" width="340" height="18" rx="8" fill="#1a1a24" stroke="#2e2e3c" stroke-width="1.5"/>
+                            <!-- rubber feet -->
+                            <rect x="50" y="354" width="30" height="4" rx="2" fill="#111118"/>
+                            <rect x="320" y="354" width="30" height="4" rx="2" fill="#111118"/>
+                            <!-- accent line -->
+                            <line x1="30" y1="341" x2="370" y2="341" stroke="#ff7a3d" stroke-width="1" opacity="0.4"/>
+                        </g>
+                    </svg>
+                </div>
+
+                <!-- Timeline Entries -->
+                <div class="timeline-container" id="timeline-container">
+                    <!-- Dynamically populated from experience.json -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section slide-up">
+            <div class="section-label">Get In Touch</div>
+            <h2 class="contact-heading text-white">
+                Let's Build <span class="accent serif-italic">Something</span><br>Together.
+            </h2>
+            <p class="contact-subtext">Whether you have a project in mind, a job opportunity, or just want to say hi — my inbox is always open.</p>
+            
+            <div class="contact-cards">
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=bilawarmadhav@gmail.com" target="_blank" class="contact-card" id="contact-email">
+                    <div class="contact-card-icon"><i class="ri-mail-send-line"></i></div>
+                    <div class="contact-card-body">
+                        <span class="contact-card-label">Email me</span>
+                        <span class="contact-card-value">bilawarmadhav@gmail.com</span>
+                    </div>
+                    <i class="ri-arrow-right-up-line contact-arrow"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/madhav-bilawar-a2217a340" target="_blank" class="contact-card" id="contact-linkedin">
+                    <div class="contact-card-icon"><i class="ri-linkedin-fill"></i></div>
+                    <div class="contact-card-body">
+                        <span class="contact-card-label">Connect on LinkedIn</span>
+                        <span class="contact-card-value">madhav-bilawar</span>
+                    </div>
+                    <i class="ri-arrow-right-up-line contact-arrow"></i>
+                </a>
+                <a href="https://github.com/bilawarmadhav" target="_blank" class="contact-card" id="contact-github">
+                    <div class="contact-card-icon"><i class="ri-github-fill"></i></div>
+                    <div class="contact-card-body">
+                        <span class="contact-card-label">See my code</span>
+                        <span class="contact-card-value">github.com/bilawarmadhav</span>
+                    </div>
+                    <i class="ri-arrow-right-up-line contact-arrow"></i>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="slide-up">
+        <div class="footer-pill" id="footer-socials">
+            <!-- Dynamically populated from socials.json -->
+        </div>
+        <p class="credits">Designed & Built by Madhav Bilawar &middot; 2026</p>
+    </footer>
+</body>
+</html>

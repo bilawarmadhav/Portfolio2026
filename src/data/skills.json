@@ -1,0 +1,17 @@
+[
+    { "iconClass": "devicon-react-original", "label": "React", "floatingClass": "floating-1", "color": "#61DAFB", "row": 1, "mini": false },
+    { "iconClass": "devicon-nextjs-plain", "label": "Next.js", "floatingClass": "floating-2", "color": "#ffffff", "row": 1, "mini": false },
+    { "iconClass": "devicon-typescript-plain", "label": "TypeScript", "floatingClass": "floating-3", "color": "#3178c6", "row": 1, "mini": false },
+    { "iconClass": "devicon-javascript-plain", "label": "JavaScript", "floatingClass": "floating-4", "color": "#f7df1e", "row": 1, "mini": false },
+    { "iconClass": "devicon-python-plain", "label": "Python", "floatingClass": "floating-5", "color": "#3776AB", "row": 2, "mini": false },
+    { "iconClass": "devicon-django-plain", "label": "Django", "floatingClass": "floating-6", "color": "#44B78B", "row": 2, "mini": false },
+    { "iconClass": "devicon-nestjs-plain", "label": "NestJS", "floatingClass": "floating-7", "color": "#E0234E", "row": 2, "mini": false },
+    { "iconClass": "devicon-nodejs-plain", "label": "Node.js", "floatingClass": "floating-8", "color": "#339933", "row": 2, "mini": false },
+    { "iconClass": "devicon-postgresql-plain", "label": "PostgreSQL", "floatingClass": "floating-9", "color": "#336791", "row": 3, "mini": false },
+    { "iconClass": "devicon-mongodb-plain", "label": "MongoDB", "floatingClass": "floating-10", "color": "#47A248", "row": 3, "mini": false },
+    { "iconClass": "devicon-mysql-plain", "label": "MySQL", "floatingClass": "floating-11", "color": "#4479A1", "row": 3, "mini": true },
+    { "iconClass": "devicon-github-original", "label": "GitHub", "floatingClass": "floating-12", "color": "", "row": 3, "mini": false },
+    { "iconClass": "devicon-googlecloud-plain", "label": "GCP", "floatingClass": "floating-13", "color": "", "row": 4, "mini": true },
+    { "iconClass": "devicon-docker-plain", "label": "Docker", "floatingClass": "floating-14", "color": "#2496ED", "row": 4, "mini": false },
+    { "iconClass": "ri-terminal-box-line", "label": "Linux CLI", "floatingClass": "floating-15", "color": "", "row": 4, "mini": true }
+]

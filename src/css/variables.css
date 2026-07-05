@@ -1,0 +1,21 @@
+:root {
+    /* Dark Mode Colors */
+    --bg-color: #0d0d0d;
+    --secondary-bg: #151515;
+    --accent: #60a5fa; /* Blue accent instead of orange */
+    --accent-secondary: #818cf8; /* Purple-blue for variety */
+    --accent-tertiary: #34d399; /* Green for success/highlights */
+    --cream: #f5f1eb;
+    --soft-gray: #a0a0a0;
+    --white: #ffffff;
+    
+    --card-bg: rgba(21, 21, 21, 0.6);
+    --border-color: rgba(255, 255, 255, 0.08);
+    --nav-bg: rgba(13, 13, 13, 0.7);
+    --pill-bg: #ffffff;
+    --pill-text: #0d0d0d;
+    
+    --font-sans: 'Inter', sans-serif;
+    --font-serif: 'Playfair Display', serif;
+    --transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}

@@ -1,0 +1,6 @@
+[
+    { "label": "GitHub", "icon": "ri-github-fill", "url": "https://github.com/bilawarmadhav" },
+    { "label": "LinkedIn", "icon": "ri-linkedin-fill", "url": "https://www.linkedin.com/in/madhav-bilawar-a2217a340" },
+    { "label": "Email", "icon": "ri-mail-fill", "url": "https://mail.google.com/mail/?view=cm&fs=1&to=bilawarmadhav@gmail.com" },
+    { "label": "Twitter/X", "icon": "ri-twitter-x-fill", "url": "https://twitter.com" }
+]

@@ -1,0 +1,61 @@
+/* Tech Marquee Section */
+.stats-section {
+    padding: 60px 0;
+    text-align: center;
+    /* No overflow:hidden — marquee must bleed to full viewport width */
+}
+
+.marquee-container {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    background: var(--card-bg);
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    padding: 28px 0;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+}
+
+.marquee-track {
+    display: flex;
+    width: max-content;
+    animation: scrollMarquee 25s linear infinite;
+    align-items: center;
+    will-change: transform;
+}
+
+/* Loop the 3 sets of icons seamlessly by translating exactly one-third of the total width */
+@keyframes scrollMarquee {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-33.3333%, 0, 0); }
+}
+
+.marquee-item {
+    font-size: 2.5rem;
+    color: var(--soft-gray);
+    margin: 0 36px;
+    opacity: 0.3;
+    transition: opacity 0.3s ease, color 0.3s ease, transform 0.3s ease;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.marquee-item:hover {
+    opacity: 0.9;
+    color: var(--white);
+    transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+    .stats-section {
+        padding: 40px 0;
+    }
+    
+    .marquee-item {
+        font-size: 2rem;
+        margin: 0 24px;
+    }
+}

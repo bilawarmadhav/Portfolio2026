@@ -1,0 +1,31 @@
+[
+    {
+        "role": "Aspiring Software Engineer",
+        "company": "Future Role",
+        "date": "Future Role",
+        "bullets": [
+            "Aiming to build robust and scalable software solutions.",
+            "Continuously expanding knowledge in backend and frontend technologies.",
+            "Looking forward to solving complex engineering problems."
+        ]
+    },
+    {
+        "role": "Full Stack Development",
+        "company": "Self-Learning",
+        "date": "Present",
+        "bullets": [
+            "Learning full-stack web development through real-world projects.",
+            "Building modern web experiences with HTML, CSS, JavaScript, and beyond.",
+            "Understanding UI/UX principles to deliver premium user interfaces."
+        ]
+    },
+    {
+        "role": "BCA Student",
+        "company": "University",
+        "date": "3rd Year",
+        "bullets": [
+            "Studying core computer science concepts, data structures, and algorithms.",
+            "Applying theoretical knowledge to practical coding assignments."
+        ]
+    }
+]

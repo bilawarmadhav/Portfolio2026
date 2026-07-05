@@ -1,0 +1,62 @@
+[
+    {
+        "id": 1,
+        "title": "Vihaan Glass Interiors",
+        "description": "A full-stack e-commerce platform for a premium glass interiors company. Features product catalog, order management, admin dashboard, and MongoDB backend.",
+        "category": "Personal",
+        "size": "large",
+        "gradientClass": "bg-gradient-1",
+        "icon": "ri-store-3-line",
+        "github": "https://github.com/bilawarmadhav",
+        "tech": ["React", "Node.js", "MongoDB"],
+        "live": null
+    },
+    {
+        "id": 2,
+        "title": "FreelanceHub Marketplace",
+        "description": "A dual-sided marketplace connecting freelancers and clients. Real-time chat, order tracking, and a full admin portal.",
+        "category": "Personal",
+        "size": "normal",
+        "gradientClass": "bg-gradient-2",
+        "icon": "ri-briefcase-4-line",
+        "github": "https://github.com/bilawarmadhav",
+        "tech": ["React", "Vite", "PostgreSQL"],
+        "live": null
+    },
+    {
+        "id": 3,
+        "title": "DSA Storyboard Platform",
+        "description": "An interactive learning platform for Data Structures & Algorithms featuring step-by-step visualisations, interview mode, and cross-platform progress tracking.",
+        "category": "Projects",
+        "size": "normal",
+        "gradientClass": "bg-gradient-3",
+        "icon": "ri-code-box-line",
+        "github": "https://github.com/bilawarmadhav",
+        "tech": ["HTML", "CSS", "JavaScript"],
+        "live": null
+    },
+    {
+        "id": 4,
+        "title": "Surreal Coding Event Platform",
+        "description": "A multi-phase coding event platform with challenge engine, admin dashboard, live leaderboards, and team authentication.",
+        "category": "Published",
+        "size": "normal",
+        "gradientClass": "bg-gradient-4",
+        "icon": "ri-trophy-line",
+        "github": "https://github.com/bilawarmadhav",
+        "tech": ["Next.js", "TypeScript", "MongoDB"],
+        "live": null
+    },
+    {
+        "id": 5,
+        "title": "This Portfolio",
+        "description": "A high-performance portfolio site built with Vite, GSAP, and vanilla JS. Features glassmorphic navbar, spring physics cursor, and scroll-driven animations.",
+        "category": "Terminal",
+        "size": "normal",
+        "gradientClass": "bg-gradient-5",
+        "icon": "ri-terminal-box-line",
+        "github": "https://github.com/bilawarmadhav",
+        "tech": ["Vite", "GSAP", "Vanilla JS"],
+        "live": null
+    }
+]
