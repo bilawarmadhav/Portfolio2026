@@ -19,10 +19,27 @@ export async function renderProjects() {
         renderStack();
         setupProjectFilters();
         setupNextButton();
+        setupResizeHandler();
         
     } catch (error) {
         console.error("Error loading projects:", error);
     }
+}
+
+function setupResizeHandler() {
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            // Recalculate card positions on resize
+            const cards = document.querySelectorAll('.project-card');
+            cards.forEach(card => {
+                const cardWidth = card.offsetWidth;
+                const xOffset = -cardWidth / 2;
+                gsap.set(card, { x: xOffset });
+            });
+        }, 150);
+    }, { passive: true });
 }
 
 function filterProjects(filter) {
@@ -111,13 +128,23 @@ function animateStack() {
     cards.forEach((card, index) => {
         const pos = positions[index] || positions[2];
         
+        // Calculate the exact pixel offset needed to center the card
+        const cardWidth = card.offsetWidth;
+        const xOffset = -cardWidth / 2;
+        
+        // Set initial position with centering first
+        gsap.set(card, {
+            x: xOffset
+        });
+        
         gsap.to(card, {
             y: pos.y,
             scale: pos.scale,
             zIndex: pos.zIndex,
             opacity: pos.opacity,
             duration: 0.5,
-            ease: 'power2.out'
+            ease: 'power2.out',
+            x: xOffset  // Maintain horizontal centering during animation
         });
     });
 }
@@ -135,10 +162,13 @@ function nextCard() {
     }
     
     const frontCard = cards[0];
+    const cardWidth = frontCard.offsetWidth;
+    const xOffset = -cardWidth / 2;
     
     // Animate front card out (down and fade) - adjusted distance for smaller cards
     gsap.to(frontCard, {
         y: 300,
+        x: xOffset,  // Maintain horizontal centering during animation
         scale: 1,
         opacity: 0,
         duration: 0.6,
@@ -155,22 +185,28 @@ function nextCard() {
                 const newProjectIndex = (currentIndex + 2) % visibleProjects.length;
                 const newProject = visibleProjects[newProjectIndex];
                 const newCard = createCard(newProject, 2);
-                
-                // Position new card at back initially
-                gsap.set(newCard, {
-                    y: -38,
-                    scale: 0.9,
-                    zIndex: 1,
-                    opacity: 0
-                });
-                
                 stack.appendChild(newCard);
                 
-                // Fade in new card
-                gsap.to(newCard, {
-                    opacity: 0.6,
-                    duration: 0.4,
-                    ease: 'power2.out'
+                // Wait for card to render to get correct width
+                requestAnimationFrame(() => {
+                    const newCardWidth = newCard.offsetWidth;
+                    const newXOffset = -newCardWidth / 2;
+                    
+                    // Position new card at back initially
+                    gsap.set(newCard, {
+                        y: -38,
+                        x: newXOffset,  // Maintain horizontal centering
+                        scale: 0.9,
+                        zIndex: 1,
+                        opacity: 0
+                    });
+                    
+                    // Fade in new card
+                    gsap.to(newCard, {
+                        opacity: 0.6,
+                        duration: 0.4,
+                        ease: 'power2.out'
+                    });
                 });
             }
             
@@ -224,18 +260,27 @@ function setupProjectFilters() {
             
             // Animate out all cards
             const cards = document.querySelectorAll('.project-card');
-            gsap.to(cards, {
-                y: 300,
-                opacity: 0,
-                duration: 0.4,
-                ease: 'power2.in',
-                stagger: 0.05,
-                onComplete: () => {
-                    // Filter and re-render
-                    filterProjects(filter);
-                    renderStack();
-                }
+            
+            // Calculate offset for each card based on its width
+            cards.forEach(card => {
+                const cardWidth = card.offsetWidth;
+                const xOffset = -cardWidth / 2;
+                
+                gsap.to(card, {
+                    y: 300,
+                    x: xOffset,  // Maintain horizontal centering during animation
+                    opacity: 0,
+                    duration: 0.4,
+                    ease: 'power2.in'
+                });
             });
+            
+            // Wait for animation to complete before re-rendering
+            setTimeout(() => {
+                // Filter and re-render
+                filterProjects(filter);
+                renderStack();
+            }, 450);
         });
     });
 }

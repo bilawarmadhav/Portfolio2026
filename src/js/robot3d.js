@@ -42,8 +42,22 @@ export function init3DRobot() {
     // Load robot model
     const loader = new GLTFLoader();
     let robot = null;
+    let robotHead = null;
+    let robotNeck = null;
+    let robotTorso = null;
     let eyes = [];
     let mixer = null;
+
+    // Global tracking state - works across entire viewport
+    let targetX = 0;
+    let targetY = 0;
+    let isTracking = false;
+
+    // Smooth interpolation values
+    let currentBodyRotationY = 0;
+    let currentBodyRotationX = 0;
+    let currentHeadRotationY = 0;
+    let currentHeadRotationX = 0;
 
     loader.load(
         '/models/scene.gltf',
@@ -64,14 +78,34 @@ export function init3DRobot() {
             
             scene.add(robot);
 
-            // Find eye objects (search for common eye naming patterns)
+            // Find robot parts for articulation
             robot.traverse((child) => {
                 if (child.isMesh) {
                     const name = child.name.toLowerCase();
+                    
+                    // Find head
+                    if (name.includes('head') || name.includes('skull')) {
+                        robotHead = child;
+                        console.log('Found head:', child.name);
+                    }
+                    
+                    // Find neck
+                    if (name.includes('neck') || name.includes('cervical')) {
+                        robotNeck = child;
+                        console.log('Found neck:', child.name);
+                    }
+                    
+                    // Find torso/body
+                    if (name.includes('torso') || name.includes('body') || name.includes('chest') || name.includes('spine')) {
+                        robotTorso = child;
+                        console.log('Found torso:', child.name);
+                    }
+                    
+                    // Find eyes
                     if (name.includes('eye') || 
                         name.includes('pupil') || 
                         name.includes('iris') ||
-                        name === 'sphere' || // Common eye mesh names
+                        name === 'sphere' || 
                         name === 'circle') {
                         console.log('Found potential eye:', child.name);
                         eyes.push(child);
@@ -79,11 +113,11 @@ export function init3DRobot() {
                 }
             });
 
-            // If no eyes found, try finding by material/color (black spheres are often eyes)
+            // If no specific eyes found, try finding by geometry
             if (eyes.length === 0) {
                 robot.traverse((child) => {
                     if (child.isMesh && child.geometry && child.geometry.type === 'SphereGeometry') {
-                        console.log('Found sphere mesh:', child.name);
+                        console.log('Found sphere mesh as eye:', child.name);
                         eyes.push(child);
                     }
                 });
@@ -95,7 +129,9 @@ export function init3DRobot() {
             if (gltf.animations && gltf.animations.length) {
                 mixer = new THREE.AnimationMixer(robot);
                 gltf.animations.forEach((clip) => {
-                    mixer.clipAction(clip).play();
+                    const action = mixer.clipAction(clip);
+                    action.setEffectiveWeight(0.3); // Reduce animation strength for smoother tracking
+                    action.play();
                 });
             }
         },
@@ -105,129 +141,89 @@ export function init3DRobot() {
         }
     );
 
-    // Mouse tracking for rotation AND eye tracking (within hero section)
-    let mouseX = 0;
-    let mouseY = 0;
-    let targetRotationY = 0;
-    let targetRotationX = 0;
-    let isHovering = false;
-    
-    // Get hero section element
-    const heroSection = document.querySelector('.hero');
+    // Global mouse/touch tracking - works across ENTIRE viewport
+    const updateTargetFromEvent = (clientX, clientY) => {
+        // Get robot container position in viewport
+        const robotRect = container.getBoundingClientRect();
+        const robotCenterX = robotRect.left + robotRect.width / 2;
+        const robotCenterY = robotRect.top + robotRect.height / 2;
 
-    // Global mouse tracking for eyes (works within hero section boundaries)
-    const handleGlobalMouseMove = (e) => {
-        // Only track if we have a hero section
-        if (!heroSection) return;
-        
-        // Get hero section boundaries
-        const heroRect = heroSection.getBoundingClientRect();
-        
-        // Check if mouse is within hero section boundaries
-        const isInHeroSection = (
-            e.clientX >= heroRect.left &&
-            e.clientX <= heroRect.right &&
-            e.clientY >= heroRect.top &&
-            e.clientY <= heroRect.bottom
-        );
-        
-        // Track eyes only within hero section
-        if (robot && eyes.length > 0 && isInHeroSection) {
-            const robotRect = container.getBoundingClientRect();
-            const robotCenterX = robotRect.left + robotRect.width / 2;
-            const robotCenterY = robotRect.top + robotRect.height / 2;
+        // Calculate vector from robot to cursor (anywhere on screen)
+        const dx = clientX - robotCenterX;
+        const dy = clientY - robotCenterY;
 
-            // Calculate vector from robot center to cursor
-            const dx = e.clientX - robotCenterX;
-            const dy = e.clientY - robotCenterY;
+        // Normalize to viewport dimensions for consistent behavior
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
 
-            // Use hero section dimensions for normalization
-            const heroWidth = heroRect.width;
-            const heroHeight = heroRect.height;
-            
-            // Horizontal angle (left-right eye movement)
-            const normalizedX = dx / (heroWidth * 0.5);
-            const angleH = Math.atan(normalizedX) * 2;
-            
-            // Vertical angle (up-down eye movement)
-            const normalizedY = dy / (heroHeight * 0.5);
-            const angleV = Math.atan(normalizedY) * 1.5;
+        // Convert to normalized coordinates (-1 to 1)
+        targetX = (dx / viewportWidth) * 2;
+        targetY = -(dy / viewportHeight) * 2;  // Negative to fix inverted Y-axis
 
-            // Apply to all eye objects
-            eyes.forEach(eye => {
-                if (eye.rotation) {
-                    const targetRotY = THREE.MathUtils.clamp(angleH, -Math.PI * 0.4, Math.PI * 0.4);
-                    const targetRotX = THREE.MathUtils.clamp(angleV, -Math.PI * 0.25, Math.PI * 0.25);
-                    
-                    // Smooth lerp for natural eye movement
-                    eye.rotation.y += (targetRotY - eye.rotation.y) * 0.12;
-                    eye.rotation.x += (targetRotX - eye.rotation.x) * 0.12;
-                }
-            });
+        isTracking = true;
+    };
+
+    // Desktop: Mouse tracking across entire document
+    const handleMouseMove = (e) => {
+        updateTargetFromEvent(e.clientX, e.clientY);
+    };
+
+    // Mobile: Touch tracking across entire document
+    const handleTouchMove = (e) => {
+        if (e.touches.length > 0) {
+            const touch = e.touches[0];
+            updateTargetFromEvent(touch.clientX, touch.clientY);
         }
     };
 
-    // Local mouse tracking for robot body rotation (only when hovering)
-    const handleLocalMouseMove = (e) => {
-        if (!isHovering) return;
-
-        const rect = container.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-
-        mouseX = ((e.clientX - centerX) / rect.width) * 2;
-        mouseY = ((e.clientY - centerY) / rect.height) * 2;
-
-        targetRotationY = mouseX * Math.PI;
-        targetRotationX = -mouseY * 0.3;
+    const handleTouchStart = (e) => {
+        if (e.touches.length > 0) {
+            const touch = e.touches[0];
+            updateTargetFromEvent(touch.clientX, touch.clientY);
+        }
     };
 
-    // Container hover states
-    container.addEventListener('mouseenter', () => {
-        isHovering = true;
-    });
+    const handleTouchEnd = () => {
+        isTracking = false;
+        // Smoothly return to idle position
+    };
 
-    container.addEventListener('mouseleave', () => {
-        isHovering = false;
-        targetRotationY = 0;
-        targetRotationX = 0;
-    });
+    // Add global event listeners (entire document) with passive flag for better scroll performance
+    document.addEventListener('mousemove', handleMouseMove, { passive: true });
+    document.addEventListener('touchstart', handleTouchStart, { passive: true });
+    document.addEventListener('touchmove', handleTouchMove, { passive: true });
+    document.addEventListener('touchend', handleTouchEnd, { passive: true });
 
-    // Global mouse tracking for eyes (always active)
-    document.addEventListener('mousemove', handleGlobalMouseMove);
-    
-    // Local mouse tracking for robot rotation (only when hovering)
-    document.addEventListener('mousemove', handleLocalMouseMove);
-
-    // Handle window resize
+    // Handle window resize with debouncing
+    let resizeTimeout;
     const handleResize = () => {
-        const width = container.clientWidth;
-        const height = container.clientHeight;
-        
-        camera.aspect = width / height;
-        camera.updateProjectionMatrix();
-        renderer.setSize(width, height);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        
-        // Recalculate robot scale on resize
-        if (robot) {
-            const box = new THREE.Box3().setFromObject(robot);
-            const size = box.getSize(new THREE.Vector3());
-            const maxDim = Math.max(size.x, size.y, size.z);
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            const width = container.clientWidth;
+            const height = container.clientHeight;
             
-            // Adjust scale based on container size
-            const targetSize = Math.min(width, height) * 0.7;
-            const scale = targetSize / maxDim;
-            robot.scale.set(scale, scale, scale);
-        }
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            
+            // Recalculate robot scale on resize
+            if (robot) {
+                const box = new THREE.Box3().setFromObject(robot);
+                const size = box.getSize(new THREE.Vector3());
+                const maxDim = Math.max(size.x, size.y, size.z);
+                
+                const targetSize = Math.min(width, height) * 0.7;
+                const scale = targetSize / maxDim;
+                robot.scale.set(scale, scale, scale);
+            }
+        }, 150);
     };
     
-    window.addEventListener('resize', handleResize);
-    
-    // Initial resize check
+    window.addEventListener('resize', handleResize, { passive: true });
     handleResize();
 
-    // Animation loop
+    // Animation loop with smooth interpolation
     const clock = new THREE.Clock();
     
     function animate() {
@@ -240,15 +236,89 @@ export function init3DRobot() {
             mixer.update(delta);
         }
 
-        // Smooth rotation for robot body
         if (robot) {
-            robot.rotation.y += (targetRotationY - robot.rotation.y) * 0.1;
-            robot.rotation.x += (targetRotationX - robot.rotation.x) * 0.1;
+            // Calculate target rotations based on cursor position
+            // Full viewport tracking with natural limits
+            const targetBodyRotY = THREE.MathUtils.clamp(targetX * Math.PI * 0.4, -Math.PI * 0.3, Math.PI * 0.3);
+            const targetBodyRotX = THREE.MathUtils.clamp(-targetY * 0.3, -0.4, 0.4);  // Added negative sign back
+            const targetHeadRotY = THREE.MathUtils.clamp(targetX * Math.PI * 0.6, -Math.PI * 0.5, Math.PI * 0.5);
+            const targetHeadRotX = THREE.MathUtils.clamp(-targetY * 0.5, -0.6, 0.6);  // Added negative sign back
 
-            // Idle animation - slight bobbing when not hovering
-            if (!isHovering) {
+            // Smooth interpolation (lerp) for natural movement
+            const lerpFactor = isTracking ? 0.08 : 0.05;
+
+            if (isTracking) {
+                // Active tracking - smooth follow
+                currentBodyRotationY += (targetBodyRotY - currentBodyRotationY) * lerpFactor;
+                currentBodyRotationX += (targetBodyRotX - currentBodyRotationX) * lerpFactor;
+                currentHeadRotationY += (targetHeadRotY - currentHeadRotationY) * lerpFactor * 1.5;
+                currentHeadRotationX += (targetHeadRotX - currentHeadRotationX) * lerpFactor * 1.5;
+
+                // Apply rotations to robot body
+                robot.rotation.y = currentBodyRotationY;
+                robot.rotation.x = currentBodyRotationX;
+
+                // Apply additional rotation to head if available
+                if (robotHead) {
+                    robotHead.rotation.y = (currentHeadRotationY - currentBodyRotationY) * 0.5;
+                    robotHead.rotation.x = (currentHeadRotX - currentBodyRotationX) * 0.5;
+                }
+
+                if (robotNeck) {
+                    robotNeck.rotation.y = (currentHeadRotationY - currentBodyRotationY) * 0.3;
+                    robotNeck.rotation.x = (currentHeadRotX - currentBodyRotationX) * 0.3;
+                }
+
+                // Keep Y position stable during tracking
+                robot.position.y = -1.2;
+            } else {
+                // Return to idle position smoothly
+                currentBodyRotationY += (0 - currentBodyRotationY) * lerpFactor;
+                currentBodyRotationX += (0 - currentBodyRotationX) * lerpFactor;
+                currentHeadRotationY += (0 - currentHeadRotationY) * lerpFactor;
+                currentHeadRotationX += (0 - currentHeadRotationX) * lerpFactor;
+
+                robot.rotation.y = currentBodyRotationY;
+                robot.rotation.x = currentBodyRotationX;
+
+                if (robotHead) {
+                    robotHead.rotation.y = 0;
+                    robotHead.rotation.x = 0;
+                }
+
+                if (robotNeck) {
+                    robotNeck.rotation.y = 0;
+                    robotNeck.rotation.x = 0;
+                }
+
+                // Idle animation - gentle bobbing
                 robot.position.y = -1.2 + Math.sin(Date.now() * 0.001) * 0.05;
-                robot.rotation.y += 0.005;
+                robot.rotation.y += 0.003;
+            }
+
+            // Eye tracking - independent of body rotation
+            // Eyes ALWAYS track cursor position, even when over the robot
+            if (eyes.length > 0 && (isTracking || Math.abs(targetX) > 0.01 || Math.abs(targetY) > 0.01)) {
+                eyes.forEach(eye => {
+                    if (eye.rotation) {
+                        // Calculate eye rotation based on raw target position
+                        // Eyes have wider range and more sensitivity
+                        const eyeTargetY = THREE.MathUtils.clamp(targetX * Math.PI * 0.8, -Math.PI * 0.4, Math.PI * 0.4);
+                        const eyeTargetX = THREE.MathUtils.clamp(-targetY * 0.8, -Math.PI * 0.3, Math.PI * 0.3);  // Added negative sign back
+                        
+                        // Smooth eye movement
+                        eye.rotation.y += (eyeTargetY - eye.rotation.y) * 0.15;
+                        eye.rotation.x += (eyeTargetX - eye.rotation.x) * 0.15;
+                    }
+                });
+            } else if (eyes.length > 0 && !isTracking) {
+                // Return eyes to center when not tracking
+                eyes.forEach(eye => {
+                    if (eye.rotation) {
+                        eye.rotation.y += (0 - eye.rotation.y) * 0.1;
+                        eye.rotation.x += (0 - eye.rotation.x) * 0.1;
+                    }
+                });
             }
         }
 
@@ -260,8 +330,10 @@ export function init3DRobot() {
     // Cleanup
     return () => {
         window.removeEventListener('resize', handleResize);
-        document.removeEventListener('mousemove', handleGlobalMouseMove);
-        document.removeEventListener('mousemove', handleLocalMouseMove);
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('touchstart', handleTouchStart);
+        document.removeEventListener('touchmove', handleTouchMove);
+        document.removeEventListener('touchend', handleTouchEnd);
         container.removeChild(renderer.domElement);
         renderer.dispose();
     };

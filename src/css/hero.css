@@ -9,6 +9,7 @@
     justify-content: center;
     position: relative;
     max-width: 100vw; /* Prevent horizontal overflow */
+    overflow-x: hidden;
 }
 
 /* Hero availability badge */
@@ -147,6 +148,8 @@
     font-size: 0.95rem;
     text-decoration: none;
     transition: var(--transition);
+    will-change: transform;
+    transform: translate3d(0, 0, 0); /* Force GPU acceleration */
 }
 
 .btn-dark {
@@ -155,7 +158,7 @@
 }
 
 .btn-dark:hover {
-    transform: translateY(-3px);
+    transform: translateY(-3px) translate3d(0, 0, 0);
     box-shadow: 0 12px 30px rgba(255, 255, 255, 0.12);
 }
 
@@ -168,7 +171,7 @@
 .btn-outline:hover {
     background: rgba(255, 255, 255, 0.06);
     border-color: rgba(255, 255, 255, 0.25);
-    transform: translateY(-3px);
+    transform: translateY(-3px) translate3d(0, 0, 0);
 }
 
 /* Background Effects */
@@ -189,6 +192,8 @@
     filter: blur(120px);
     opacity: 0.15;
     animation: drift 20s infinite alternate;
+    will-change: transform;
+    transform: translate3d(0, 0, 0); /* Force GPU acceleration */
 }
 
 .blob-1 {

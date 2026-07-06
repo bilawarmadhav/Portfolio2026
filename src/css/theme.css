@@ -87,6 +87,11 @@ body.light-theme {
     --nav-bg: rgba(247, 244, 240, 0.8);
     --pill-bg: #111111;
     --pill-text: #ffffff;
+    
+    /* Orange accent for light mode */
+    --accent: #ff7a3d;
+    --accent-secondary: #ff9a5f;
+    --accent-tertiary: #ff6b2c;
 }
 
 /* Blobs are lighter in light mode */

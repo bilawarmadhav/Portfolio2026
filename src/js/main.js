@@ -18,7 +18,6 @@ import '../css/responsive.css';
 // Import JS modules
 import { initTheme } from './theme.js';
 import { initAnimations } from './animations.js';
-import { initStats } from './stats.js';
 import { renderProjects } from './projects.js';
 import { renderTimeline } from './timeline.js';
 import { renderSkills } from './skills.js';
@@ -48,5 +47,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     // 3. Initialize Animations (must be called after dynamic content is rendered)
     initAnimations();
-    initStats();
 });

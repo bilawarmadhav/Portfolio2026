@@ -5,6 +5,9 @@ export function initCursorAndNav() {
     
     if (!cursorDot || !navContainer) return;
 
+    // Use will-change for performance hint
+    cursorDot.style.willChange = 'transform';
+
     // Expand / Collapse Navbar
     const expandNav = () => {
         navContainer.classList.remove('collapsed');
@@ -16,8 +19,8 @@ export function initCursorAndNav() {
         navContainer.classList.add('collapsed');
     };
 
-    navContainer.addEventListener('mouseenter', expandNav);
-    navContainer.addEventListener('mouseleave', collapseNav);
+    navContainer.addEventListener('mouseenter', expandNav, { passive: true });
+    navContainer.addEventListener('mouseleave', collapseNav, { passive: true });
     navContainer.addEventListener('click', (e) => {
         if (e.target.closest('.nav-link')) return;
         if (navContainer.classList.contains('collapsed')) {
@@ -27,17 +30,18 @@ export function initCursorAndNav() {
         }
     });
 
-    // Custom Cursor with Spring Physics (Matching Framer Motion stiffness/damping)
+    // Custom Cursor with Spring Physics - Optimized
     let mouseX = window.innerWidth / 2;
     let mouseY = window.innerHeight / 2;
     let cursorX = mouseX;
     let cursorY = mouseY;
     let isMagnetic = false;
+    let rafId = null;
     
     window.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
-    });
+    }, { passive: true });
 
     const render = () => {
         if (!isMagnetic) {
@@ -45,14 +49,15 @@ export function initCursorAndNav() {
             cursorX += (mouseX - cursorX) * 0.25;
             cursorY += (mouseY - cursorY) * 0.25;
             
-            cursorDot.style.transform = `translate(${cursorX}px, ${cursorY}px) translate(-50%, -50%) scale(1)`;
+            // Use translate3d for GPU acceleration
+            cursorDot.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%) scale(1)`;
             cursorDot.style.width = `8px`;
             cursorDot.style.height = `8px`;
             cursorDot.style.borderRadius = `9999px`;
         }
-        requestAnimationFrame(render);
+        rafId = requestAnimationFrame(render);
     };
-    requestAnimationFrame(render);
+    rafId = requestAnimationFrame(render);
 
     // Magnetic Pill Highlight
     magneticElements.forEach((el) => {
@@ -65,8 +70,8 @@ export function initCursorAndNav() {
             cursorDot.style.width = `${rect.width}px`;
             cursorDot.style.height = `${rect.height}px`;
             cursorDot.style.borderRadius = `8px`;
-            cursorDot.style.transform = `translate(${rect.left + rect.width / 2}px, ${rect.top + rect.height / 2}px) translate(-50%, -50%) scale(1.05)`;
-        });
+            cursorDot.style.transform = `translate3d(${rect.left + rect.width / 2}px, ${rect.top + rect.height / 2}px, 0) translate(-50%, -50%) scale(1.05)`;
+        }, { passive: true });
 
         el.addEventListener('mouseleave', () => {
             isMagnetic = false;
@@ -74,6 +79,6 @@ export function initCursorAndNav() {
             // Prevent jerking by syncing variables back to mouse instantly
             cursorX = mouseX;
             cursorY = mouseY;
-        });
+        }, { passive: true });
     });
 }

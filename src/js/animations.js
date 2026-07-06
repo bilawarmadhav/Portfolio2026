@@ -8,6 +8,11 @@ export function initAnimations() {
 
     gsap.registerPlugin(ScrollTrigger);
 
+    // Configure ScrollTrigger for better performance
+    ScrollTrigger.config({
+        autoRefreshEvents: 'visibilitychange,DOMContentLoaded,load'
+    });
+
     // ─────────────────────────────────────────────────────────────────────────
     // 1. SECTION-LEVEL SLIDE-UP REVEALS (.slide-up)
     //    Remove the old CSS class approach — GSAP sets from/to directly.
@@ -16,7 +21,7 @@ export function initAnimations() {
     slideUpEls.forEach(el => {
         // Reset any CSS-driven initial state
         el.style.opacity = '0';
-        el.style.transform = 'translateY(40px)';
+        el.style.transform = 'translate3d(0, 40px, 0)';
 
         ScrollTrigger.create({
             trigger: el,
@@ -28,6 +33,7 @@ export function initAnimations() {
                     y: 0,
                     duration: 0.9,
                     ease: 'power3.out',
+                    clearProps: 'transform' // Clean up after animation
                 });
             }
         });
@@ -55,8 +61,13 @@ export function initAnimations() {
         const items = Array.from(parent.children);
         if (!items.length) return;
 
-        // Pre-hide all items
-        gsap.set(items, { opacity: 0, x: alternating ? 0 : fromX, y: fromY });
+        // Pre-hide all items with GPU-accelerated properties
+        gsap.set(items, { 
+            opacity: 0, 
+            x: alternating ? 0 : fromX, 
+            y: fromY,
+            force3D: true // Force GPU acceleration
+        });
 
         items.forEach((item, i) => {
             if (alternating) {
@@ -77,6 +88,8 @@ export function initAnimations() {
                     ease: 'power3.out',
                     stagger,
                     delay,
+                    force3D: true,
+                    clearProps: 'transform' // Clean up after animation
                 });
             }
         });
@@ -135,7 +148,7 @@ export function initAnimations() {
         });
 
         const wordSpans = heading.querySelectorAll('.word-reveal > span');
-        gsap.set(wordSpans, { y: '110%', opacity: 0 });
+        gsap.set(wordSpans, { y: '110%', opacity: 0, force3D: true });
 
         ScrollTrigger.create({
             trigger: heading,
@@ -148,6 +161,8 @@ export function initAnimations() {
                     duration: 0.7,
                     ease: 'power3.out',
                     stagger: 0.08,
+                    force3D: true,
+                    clearProps: 'transform'
                 });
             }
         });
@@ -176,7 +191,7 @@ function initLaptopScrub() {
     if (!parts.length) return;
 
     // ── Assembled state (start): all parts at origin ─────────────────────────
-    gsap.set(parts, { x: 0, y: 0, rotation: 0, opacity: 1 });
+    gsap.set(parts, { x: 0, y: 0, rotation: 0, opacity: 1, force3D: true });
 
     // ── Exploded offsets for each part ───────────────────────────────────────
     // These define where each part flies TO during the explode phase
@@ -209,6 +224,7 @@ function initLaptopScrub() {
             x, y, rotation,
             duration: 0.6,
             ease: 'power2.out',
+            force3D: true
         }, 0);
     });
 
@@ -218,6 +234,7 @@ function initLaptopScrub() {
             x: 0, y: 0, rotation: 0,
             duration: 0.4,
             ease: 'power3.inOut',
+            force3D: true
         }, 0.6);
     });
 }

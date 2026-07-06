@@ -69,12 +69,14 @@
 /* Stack Container */
 .projects-stack-container {
     position: relative;
-    max-width: 600px;
+    width: 100%;
+    max-width: 100%;
     margin: 0 auto;
-    padding: 60px 20px 100px;
+    padding: 60px 0 100px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     min-height: 600px;
 }
 
@@ -88,6 +90,7 @@
     align-items: flex-start;
     padding-top: 40px;
     overflow: visible;
+    margin: 0 auto;
 }
 
 .next-card-btn {
@@ -160,16 +163,49 @@
     transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1),
                 border-color 0.3s ease,
                 box-shadow 0.3s ease;
+    will-change: transform;
+    transform: translate3d(0, 0, 0); /* Force GPU acceleration */
 }
 
-/* Stack cards positioning */
+/* Stack cards positioning - unified centering approach */
 .projects-stack-wrapper .project-card {
     position: absolute;
     top: 0;
     left: 50%;
-    transform: translateX(-50%);
     width: 380px;
-    max-width: 90vw;
+    max-width: calc(100vw - 40px);
+    /* Transform will be handled by GSAP for proper centering */
+}
+
+/* Responsive card widths */
+@media (max-width: 900px) {
+    .projects-stack-wrapper .project-card {
+        width: 360px;
+    }
+}
+
+@media (max-width: 768px) {
+    .projects-stack-wrapper .project-card {
+        width: 340px;
+    }
+}
+
+@media (max-width: 600px) {
+    .projects-stack-wrapper .project-card {
+        width: min(340px, calc(100vw - 50px));
+    }
+}
+
+@media (max-width: 480px) {
+    .projects-stack-wrapper .project-card {
+        width: min(300px, calc(100vw - 50px));
+    }
+}
+
+@media (max-width: 360px) {
+    .projects-stack-wrapper .project-card {
+        width: min(280px, calc(100vw - 40px));
+    }
 }
 
 /* Reset positioning for carousel cards */
@@ -181,7 +217,7 @@
 }
 
 .project-card:hover {
-    transform: translateY(-8px);
+    transform: translateY(-8px) translate3d(0, 0, 0);
     border-color: rgba(255, 255, 255, 0.2);
     box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
 }
@@ -392,12 +428,7 @@
     }
     
     .projects-stack-wrapper {
-        max-width: 380px;
-        min-height: 480px;
-    }
-    
-    .projects-stack-container .project-card {
-        max-width: 360px;
+        max-width: 400px;
     }
 }
 
@@ -419,18 +450,11 @@
     }
     
     .projects-stack-container {
-        padding: 40px 16px 80px;
-        min-height: 550px;
+        padding: 40px 0 80px;
     }
     
     .projects-stack-wrapper {
-        max-width: 340px;
-        min-height: 460px;
-    }
-    
-    .projects-stack-wrapper .project-card {
-        width: 320px;
-        max-width: 90vw;
+        max-width: 360px;
     }
     
     .next-card-btn {
@@ -475,18 +499,19 @@
     }
     
     .projects-stack-container {
-        padding: 30px 12px 70px;
+        padding: 30px 15px 70px;
         min-height: 520px;
     }
     
     .projects-stack-wrapper {
-        max-width: 300px;
+        max-width: 320px;
         min-height: 440px;
+        padding: 0;
     }
     
     .projects-stack-wrapper .project-card {
-        width: 290px;
-        max-width: 90vw;
+        width: 300px;
+        max-width: calc(100vw - 50px);
     }
     
     .next-card-btn {
@@ -538,18 +563,19 @@
         flex: 0 0 min(92vw, 320px);
     }
 
-    .projects-stack-container .project-card {
-        max-width: 280px;
+    .projects-stack-container {
+        padding: 30px 10px 70px;
     }
     
     .projects-stack-wrapper {
-        max-width: 280px;
+        max-width: 290px;
         min-height: 420px;
+        padding: 0;
     }
     
     .projects-stack-wrapper .project-card {
         width: 280px;
-        max-width: 90vw;
+        max-width: calc(100vw - 40px);
     }
     
     .next-card-btn {
